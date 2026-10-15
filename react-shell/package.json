@@ -10,7 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@softarc/native-federation-orchestrator": "^4.5.2",
+    "@softarc/native-federation-orchestrator": "^4.6.0",
+    "es-module-shims": "^2.8.4",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.4"

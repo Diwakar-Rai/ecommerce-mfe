@@ -12,6 +12,11 @@ declare module "react" {
         React.HTMLAttributes<HTMLElement>,
         HTMLElement
       >;
+
+      "angular-orders": React.DetailedHTMLProps<
+  React.HTMLAttributes<HTMLElement>,
+  HTMLElement
+>;
     }
   }
 }
