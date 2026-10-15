@@ -1,4 +1,4 @@
-
+import React from "react";
 import { Link, useParams } from "react-router-dom";
 import { getProductById } from "../data/products";
 import { addToCart } from "../events/cartEvents";
@@ -27,9 +27,7 @@ function ProductDetailsPage() {
       <div className="details-content">
         <p className="eyebrow">{product.category}</p>
         <h1>{product.name}</h1>
-        <p className="details-description">
-          {product.description}
-        </p>
+        <p className="details-description">{product.description}</p>
 
         <p className="details-price">
           ₹{product.price.toLocaleString("en-IN")}

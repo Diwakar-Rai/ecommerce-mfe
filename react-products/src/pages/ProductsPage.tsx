@@ -1,4 +1,4 @@
-
+import React from "react";
 import { Link } from "react-router-dom";
 import { products } from "../data/products";
 import { addToCart } from "../events/cartEvents";
@@ -10,21 +10,17 @@ function ProductsPage() {
         <div>
           <p className="eyebrow">OUR COLLECTION</p>
           <h1>Discover Products</h1>
-          <p className="muted">
-            Find something you'll love.
-          </p>
+          <p className="muted">Find something you'll love.</p>
         </div>
 
-        <span className="product-count">
-          {products.length} products
-        </span>
+        <span className="product-count">{products.length} products</span>
       </div>
 
       <div className="product-grid">
         {products.map((product) => (
           <article className="product-card" key={product.id}>
             <Link
-              to={`${product.id}`}
+              to={`/${product.id}`}
               className="product-art"
               aria-label={`View ${product.name}`}
             >
@@ -34,21 +30,14 @@ function ProductsPage() {
             <div className="product-info">
               <p className="category">{product.category}</p>
 
-              <Link
-                to={`${product.id}`}
-                className="product-name"
-              >
+              <Link to={`/${product.id}`} className="product-name">
                 {product.name}
               </Link>
 
-              <p className="product-description">
-                {product.description}
-              </p>
+              <p className="product-description">{product.description}</p>
 
               <div className="product-card-footer">
-                <strong>
-                  ₹{product.price.toLocaleString("en-IN")}
-                </strong>
+                <strong>₹{product.price.toLocaleString("en-IN")}</strong>
 
                 <button
                   className="add-button"
