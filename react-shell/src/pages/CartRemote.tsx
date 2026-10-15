@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { loadRemoteModule } from "../federation";
+import LoadingFallback from "../components/LoadingFallback";
+import RemoteErrorFallback from "../components/RemoteErrorFallback";
 
 const CART_CSS = "http://localhost:5175/cart.css";
 
@@ -9,13 +11,7 @@ function loadCartStyles(): Promise<void> {
       'link[data-mfe-styles="cart"]',
     );
 
-    if (link?.dataset.loaded === "true") {
-      resolve();
-      return;
-    }
-
-    if (link?.sheet) {
-      link.dataset.loaded = "true";
+    if (link?.dataset.loaded === "true" || link?.sheet) {
       resolve();
       return;
     }
@@ -25,51 +21,67 @@ function loadCartStyles(): Promise<void> {
       link.rel = "stylesheet";
       link.href = CART_CSS;
       link.dataset.mfeStyles = "cart";
+      document.head.appendChild(link);
     }
 
-    link.onload = () => {
-      link!.dataset.loaded = "true";
+    const stylesheet = link;
+
+    stylesheet.onload = () => {
+      stylesheet.dataset.loaded = "true";
       resolve();
     };
 
-    link.onerror = () =>
+    stylesheet.onerror = () => {
+      stylesheet.remove();
       reject(new Error(`Failed to load Cart CSS: ${CART_CSS}`));
-
-    if (!link.isConnected) {
-      document.head.appendChild(link);
-    }
+    };
   });
 }
 
 function CartRemote() {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
     let active = true;
 
     async function start() {
+      setLoaded(false);
+      setError("");
+
       try {
         await loadCartStyles();
         await loadRemoteModule("react_cart", "./CartElement");
 
         if (active) setLoaded(true);
       } catch (err) {
+        console.error("Cart loading failed:", err);
+
         if (active) {
           setError(err instanceof Error ? err.message : "Unable to load Cart.");
         }
       }
     }
 
-    start();
+    void start();
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [retryCount]);
 
-  if (error) return <p>Could not load Cart: {error}</p>;
-  if (!loaded) return <p>Loading Cart...</p>;
+  if (error) {
+    return (
+      <RemoteErrorFallback
+        name="Cart"
+        message={error}
+        onRetry={() => setRetryCount((count) => count + 1)}
+      />
+    );
+  }
+
+  if (!loaded) return <LoadingFallback name="Cart" />;
 
   return <cart-mfe />;
 }

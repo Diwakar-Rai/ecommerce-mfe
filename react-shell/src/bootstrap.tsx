@@ -1,25 +1,56 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import App from "./App";
-import Home from "./pages/Home";
-import Placeholder from "./pages/Placeholder";
+import ErrorBoundary from "./components/ErrorBoundary";
+import LoadingFallback from "./components/LoadingFallback";
 import "./index.css";
-import ProductsRemote from "./pages/ProductsRemote";
-import CartRemote from "./pages/CartRemote";
-import OrdersRemote from "./pages/OrdersRemote"
+
+const Home = lazy(() => import("./pages/Home"));
+const ProductsRemote = lazy(() => import("./pages/ProductsRemote"));
+const CartRemote = lazy(() => import("./pages/CartRemote"));
+const OrdersRemote = lazy(() => import("./pages/OrdersRemote"));
+const ProfileRemote = lazy(() => import("./pages/ProfileRemote"));
+
+function withLoadingFallback(
+  name: string,
+  element: React.ReactNode,
+) {
+  return (
+    <ErrorBoundary name={name}>
+      <Suspense fallback={<LoadingFallback name={name} />}>
+        {element}
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     children: [
-      { index: true, element: <Home /> },
-      { path: "products/*", element: <ProductsRemote /> },
-      { path: "cart", element: <CartRemote /> },
-      { path: "orders/*", element: <OrdersRemote /> },
-      { path: "profile", element: <Placeholder /> },
+      {
+        index: true,
+        element: withLoadingFallback("Home", <Home />),
+      },
+      {
+        path: "products/*",
+        element: withLoadingFallback("Products", <ProductsRemote />),
+      },
+      {
+        path: "cart",
+        element: withLoadingFallback("Cart", <CartRemote />),
+      },
+      {
+        path: "orders/*",
+        element: withLoadingFallback("Orders", <OrdersRemote />),
+      },
+      {
+        path: "profile",
+        element: withLoadingFallback("Profile", <ProfileRemote />),
+      },
       {
         path: "*",
         element: <h1>404 — Page Not Found</h1>,

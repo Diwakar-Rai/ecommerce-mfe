@@ -17,6 +17,11 @@ declare module "react" {
   React.HTMLAttributes<HTMLElement>,
   HTMLElement
 >;
+
+ "angular-profile": React.DetailedHTMLProps<
+      React.HTMLAttributes<HTMLElement>,
+      HTMLElement
+    >;
     }
   }
 }

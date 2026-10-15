@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadRemoteModule } from "../federation";
+import LoadingFallback from "../components/LoadingFallback";
+import RemoteErrorFallback from "../components/RemoteErrorFallback";
 
 const PRODUCTS_CSS = "http://localhost:5174/products.css";
 
@@ -20,31 +22,31 @@ function loadProductsStylesheet(): Promise<void> {
       link.rel = "stylesheet";
       link.href = PRODUCTS_CSS;
       link.dataset.mfeStyles = "products";
+      document.head.appendChild(link);
     }
 
-    link.onload = () => {
-      link!.dataset.loaded = "true";
+    const stylesheet = link;
+
+    stylesheet.onload = () => {
+      stylesheet.dataset.loaded = "true";
       resolve();
     };
 
-    link.onerror = () => {
+    stylesheet.onerror = () => {
+      stylesheet.remove();
       reject(new Error(`Failed to load Products CSS: ${PRODUCTS_CSS}`));
     };
-
-    if (!link.isConnected) {
-      document.head.appendChild(link);
-    }
   });
 }
 
 function ProductsRemote() {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState("");
+  const [retryCount, setRetryCount] = useState(0);
 
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Sync navigation initiated inside the Products remote with the shell.
   useEffect(() => {
     const handleRemoteNavigation = (event: Event) => {
       const detail = (event as CustomEvent<{ pathname: string }>).detail;
@@ -72,17 +74,21 @@ function ProductsRemote() {
     };
   }, [location.pathname, navigate]);
 
-  // Load CSS first, then register the federated custom element.
   useEffect(() => {
     let active = true;
 
     async function start() {
+      setLoaded(false);
+      setError("");
+
       try {
         await loadProductsStylesheet();
         await loadRemoteModule("react_products", "./ProductsElement");
 
         if (active) setLoaded(true);
       } catch (err) {
+        console.error("Products loading failed:", err);
+
         if (active) {
           setError(
             err instanceof Error ? err.message : "Unable to load Products.",
@@ -91,20 +97,24 @@ function ProductsRemote() {
       }
     }
 
-    start();
+    void start();
 
     return () => {
       active = false;
     };
-  }, []);
+  }, [retryCount]);
 
   if (error) {
-    return <p>Could not load Products: {error}</p>;
+    return (
+      <RemoteErrorFallback
+        name="Products"
+        message={error}
+        onRetry={() => setRetryCount((count) => count + 1)}
+      />
+    );
   }
 
-  if (!loaded) {
-    return <p>Loading Products...</p>;
-  }
+  if (!loaded) return <LoadingFallback name="Products" />;
 
   return <products-mfe />;
 }

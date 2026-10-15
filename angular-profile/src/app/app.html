@@ -1,0 +1,95 @@
+﻿<div class="profile-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">MY ACCOUNT</p>
+      <h1>My Profile</h1>
+      <p class="subtitle">Manage your personal information and shipping details.</p>
+    </div>
+
+    @if (!isEditing) {
+      <button class="primary-button" (click)="startEditing()">Edit Profile</button>
+    }
+  </header>
+
+  <section class="profile-card">
+    <div class="profile-banner"></div>
+
+    <div class="profile-summary">
+      <div class="avatar">{{ profile.name.charAt(0) }}</div>
+      <div>
+        <h2>{{ profile.name }}</h2>
+        <p>{{ profile.email }}</p>
+        <span class="customer-id">Customer ID: {{ profile.id }}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="details-card">
+    <div class="section-heading">
+      <div>
+        <h2>Personal Information</h2>
+        <p>Your contact details</p>
+      </div>
+    </div>
+
+    <div class="details-grid">
+      <label>
+        Full name
+        <input [disabled]="!isEditing" [(ngModel)]="profile.name" />
+      </label>
+
+      <label>
+        Email address
+        <input type="email" [disabled]="!isEditing" [(ngModel)]="profile.email" />
+      </label>
+
+      <label>
+        Phone number
+        <input [disabled]="!isEditing" [(ngModel)]="profile.phone" />
+      </label>
+
+      <label>
+        Customer ID
+        <input [value]="profile.id" disabled />
+      </label>
+    </div>
+  </section>
+
+  <section class="details-card">
+    <div class="section-heading">
+      <div>
+        <h2>Shipping Address</h2>
+        <p>Where your orders are delivered</p>
+      </div>
+    </div>
+
+    <div class="details-grid">
+      <label class="full-width">
+        Street address
+        <input [disabled]="!isEditing" [(ngModel)]="profile.address" />
+      </label>
+
+      <label>
+        City
+        <input [disabled]="!isEditing" [(ngModel)]="profile.city" />
+      </label>
+
+      <label>
+        State
+        <input [disabled]="!isEditing" [(ngModel)]="profile.state" />
+      </label>
+
+      <label>
+        Postal code
+        <input [disabled]="!isEditing" [(ngModel)]="profile.postalCode" />
+      </label>
+    </div>
+
+    @if (isEditing) {
+      <div class="form-actions">
+        <button class="secondary-button" (click)="cancelEditing()">Cancel</button>
+        <button class="primary-button" (click)="saveProfile()">Save Changes</button>
+      </div>
+    }
+  </section>
+</div>
