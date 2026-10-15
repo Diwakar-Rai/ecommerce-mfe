@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Placeholder from "./pages/Placeholder";
 import "./index.css";
 import ProductsRemote from "./pages/ProductsRemote";
+import CartRemote from "./pages/CartRemote";
 
 const router = createBrowserRouter([
   {
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "products/*", element: <ProductsRemote /> },
-      { path: "cart", element: <Placeholder /> },
+      { path: "cart", element: <CartRemote /> },
       { path: "orders/*", element: <Placeholder /> },
       { path: "profile", element: <Placeholder /> },
       {

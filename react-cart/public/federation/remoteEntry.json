@@ -1,0 +1,60 @@
+{
+  "$version": "v4",
+  "name": "react_cart",
+  "shared": [
+    {
+      "packageName": "react",
+      "outFileName": "react.kOcLYD5Mxc.js",
+      "requiredVersion": "^19.2.8",
+      "singleton": true,
+      "strictVersion": true,
+      "version": "19.3.1"
+    },
+    {
+      "packageName": "react-dom",
+      "outFileName": "react_dom.q8iLtj8M4l.js",
+      "requiredVersion": "^19.2.8",
+      "singleton": true,
+      "strictVersion": true,
+      "version": "19.3.1"
+    },
+    {
+      "packageName": "react-dom/client",
+      "outFileName": "react_dom_client.YOp8RDWjxg.js",
+      "requiredVersion": "^19.2.8",
+      "singleton": true,
+      "strictVersion": true,
+      "version": "19.3.1"
+    },
+    {
+      "packageName": "react-router-dom",
+      "outFileName": "react_router_dom.9aoN5zb4az.js",
+      "requiredVersion": "^7.18.4",
+      "singleton": true,
+      "strictVersion": true,
+      "version": "7.18.4"
+    },
+    {
+      "singleton": false,
+      "strictVersion": false,
+      "version": "0.0.0",
+      "requiredVersion": "0.0.0",
+      "packageName": "@nf-internal/chunk-NNSSKBJZ",
+      "outFileName": "chunk-NNSSKBJZ.js"
+    },
+    {
+      "singleton": false,
+      "strictVersion": false,
+      "version": "0.0.0",
+      "requiredVersion": "0.0.0",
+      "packageName": "@nf-internal/chunk-CAP6FYJW",
+      "outFileName": "chunk-CAP6FYJW.js"
+    }
+  ],
+  "exposes": [
+    {
+      "key": "./CartElement",
+      "outFileName": "CartElement-2BIEKTT6.js"
+    }
+  ]
+}

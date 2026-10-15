@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   CART_STATE_EVENT,
@@ -8,9 +8,7 @@ import {
 } from "../events/cartEvents";
 
 function CartPage() {
-  const [items, setItems] = useState<CartItem[]>([
-    { productId: "abc1", name: "ABCDE", price: 100, quantity: 2 },
-  ]);
+  const [items, setItems] = useState<CartItem[]>([]);
 
   useEffect(() => {
     const handleCartState = (event: Event) => {

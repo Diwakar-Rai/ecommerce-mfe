@@ -1,0 +1,1 @@
+import{a as n,b as i,c as a,e as c}from"@nf-internal/chunk-CAP6FYJW";var u={};a(u,{ns:()=>l});import*as l from"react";var o=n(()=>{});var p=i((v,f)=>{f.exports=(function(e){var t=e.default;return t===null||typeof t!="object"&&typeof t!="function"?e:Object.keys(e).every(function(r){return r==="default"||e[r]===t[r]})?t:e})((o(),c(u)).ns)});export{p as a};
