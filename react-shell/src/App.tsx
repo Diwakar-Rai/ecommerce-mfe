@@ -1,6 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import "./App.css";
-
+import "./app.css";
 const navigation = [
   { label: "Home", path: "/" },
   { label: "Products", path: "/products" },
