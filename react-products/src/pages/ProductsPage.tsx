@@ -1,9 +1,29 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { products } from "../data/products";
+import type { Product } from "../data/products";
+import type { AddToCartDetail } from "../events/cartEvents";
 import { addToCart } from "../events/cartEvents";
 
-function ProductsPage() {
+type ProductsPageProps = {
+  onAddToCart?: (item: AddToCartDetail) => void;
+};
+
+function ProductsPage({ onAddToCart }: ProductsPageProps) {
+  function handleAddToCart(product: Product) {
+    const item: AddToCartDetail = {
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+    };
+
+    if (onAddToCart) {
+      onAddToCart(item);
+    } else {
+      addToCart(item);
+    }
+  }
+
   return (
     <section className="products-page">
       <div className="page-heading">
@@ -41,14 +61,7 @@ function ProductsPage() {
 
                 <button
                   className="add-button"
-                  onClick={() =>
-                    addToCart({
-                      productId: product.id,
-                      name: product.name,
-                      price: product.price,
-                      quantity: 1,
-                    })
-                  }
+                  onClick={() => handleAddToCart(product)}
                 >
                   Add to Cart
                 </button>

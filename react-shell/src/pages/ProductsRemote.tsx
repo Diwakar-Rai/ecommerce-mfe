@@ -1,8 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { loadRemoteModule } from "../federation";
 import LoadingFallback from "../components/LoadingFallback";
 import RemoteErrorFallback from "../components/RemoteErrorFallback";
+import { CART_ADD_EVENT, type CartItem } from "../cart/cartEvents";
+
+type ProductsMfeElement = HTMLElement & {
+  onAddToCart?: (item: CartItem) => void;
+};
 
 const PRODUCTS_CSS = "http://localhost:5174/products.css";
 
@@ -44,8 +49,20 @@ function ProductsRemote() {
   const [error, setError] = useState("");
   const [retryCount, setRetryCount] = useState(0);
 
+  const productsRef = useRef<ProductsMfeElement>(null);
+
   const location = useLocation();
   const navigate = useNavigate();
+
+  // The callback crosses the custom-element boundary.
+  // The Shell forwards the item to its existing cart handler.
+  const handleAddToCart = useCallback((item: CartItem) => {
+    window.dispatchEvent(
+      new CustomEvent<CartItem>(CART_ADD_EVENT, {
+        detail: item,
+      }),
+    );
+  }, []);
 
   useEffect(() => {
     const handleRemoteNavigation = (event: Event) => {
@@ -104,6 +121,19 @@ function ProductsRemote() {
     };
   }, [retryCount]);
 
+  // Assign the callback as a DOM property, not an HTML attribute.
+  useEffect(() => {
+    if (!loaded || !productsRef.current) return;
+
+    productsRef.current.onAddToCart = handleAddToCart;
+
+    return () => {
+      if (productsRef.current) {
+        productsRef.current.onAddToCart = undefined;
+      }
+    };
+  }, [loaded, handleAddToCart]);
+
   if (error) {
     return (
       <RemoteErrorFallback
@@ -116,7 +146,7 @@ function ProductsRemote() {
 
   if (!loaded) return <LoadingFallback name="Products" />;
 
-  return <products-mfe />;
+  return <products-mfe ref={productsRef} />;
 }
 
 export default ProductsRemote;

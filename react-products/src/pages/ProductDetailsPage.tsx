@@ -1,60 +1,78 @@
-import React from "react";
-import { Link, useParams } from "react-router-dom";
-import { getProductById } from "../data/products";
+import { Link } from "react-router-dom";
+import { products } from "../data/products";
+import type { Product } from "../data/products";
+import type { AddToCartDetail } from "../events/cartEvents";
 import { addToCart } from "../events/cartEvents";
 
-function ProductDetailsPage() {
-  const { id } = useParams<{ id: string }>();
-  const product = id ? getProductById(id) : undefined;
+type ProductsPageProps = {
+  onAddToCart?: (item: AddToCartDetail) => void;
+};
 
-  if (!product) {
-    return (
-      <section className="empty-state">
-        <h1>Product not found</h1>
-        <Link to="/" className="primary-button">
-          Back to Products
-        </Link>
-      </section>
-    );
+function ProductsPage({ onAddToCart }: ProductsPageProps) {
+  function handleAddToCart(product: Product) {
+    const item: AddToCartDetail = {
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: 1,
+    };
+
+    if (onAddToCart) {
+      onAddToCart(item);
+    } else {
+      // Preserve the existing standalone behavior.
+      addToCart(item);
+    }
   }
 
   return (
-    <section className="details-layout">
-      <div className="details-art">
-        <span>{product.emoji}</span>
+    <section className="products-page">
+      <div className="page-heading">
+        <div>
+          <p className="eyebrow">OUR COLLECTION</p>
+          <h1>Discover Products</h1>
+          <p className="muted">Find something you'll love.</p>
+        </div>
+
+        <span className="product-count">{products.length} products</span>
       </div>
 
-      <div className="details-content">
-        <p className="eyebrow">{product.category}</p>
-        <h1>{product.name}</h1>
-        <p className="details-description">{product.description}</p>
+      <div className="product-grid">
+        {products.map((product) => (
+          <article className="product-card" key={product.id}>
+            <Link
+              to={`/${product.id}`}
+              className="product-art"
+              aria-label={`View ${product.name}`}
+            >
+              <span>{product.emoji}</span>
+            </Link>
 
-        <p className="details-price">
-          ₹{product.price.toLocaleString("en-IN")}
-        </p>
+            <div className="product-info">
+              <p className="category">{product.category}</p>
 
-        <button
-          className="primary-button"
-          onClick={() =>
-            addToCart({
-              productId: product.id,
-              name: product.name,
-              price: product.price,
-              quantity: 1,
-            })
-          }
-        >
-          Add to Cart
-        </button>
+              <Link to={`/${product.id}`} className="product-name">
+                {product.name}
+              </Link>
 
-        <p>
-          <Link to="/" className="back-link">
-            ← Back to all products
-          </Link>
-        </p>
+              <p className="product-description">{product.description}</p>
+
+              <div className="product-card-footer">
+                <strong>₹{product.price.toLocaleString("en-IN")}</strong>
+
+                <button
+                  className="add-button"
+                  onClick={() => handleAddToCart(product)}
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
     </section>
   );
 }
 
-export default ProductDetailsPage;
+export default ProductsPage;
