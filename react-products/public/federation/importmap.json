@@ -1,10 +1,10 @@
 {
   "imports": {
-    "react": "react.kOcLYD5Mxc.js",
-    "react-dom": "react_dom.q8iLtj8M4l.js",
-    "react-dom/client": "react_dom_client.YOp8RDWjxg.js",
-    "react-router-dom": "react_router_dom.9aoN5zb4az.js",
-    "@nf-internal/chunk-NNSSKBJZ": "chunk-NNSSKBJZ.js",
-    "@nf-internal/chunk-CAP6FYJW": "chunk-CAP6FYJW.js"
+    "react": "react.XmmHUXYCRm-dev.js",
+    "react-dom": "react_dom.2yKIQJEYjo-dev.js",
+    "react-dom/client": "react_dom_client.OgvANFQokQ-dev.js",
+    "react-router-dom": "react_router_dom.UE7E-qZYls-dev.js",
+    "@nf-internal/chunk-6UNACJT5": "chunk-6UNACJT5.js",
+    "@nf-internal/chunk-HOM7SSJL": "chunk-HOM7SSJL.js"
   }
 }

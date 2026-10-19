@@ -3,7 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { loadRemoteModule } from "../federation";
 import LoadingFallback from "../components/LoadingFallback";
 import RemoteErrorFallback from "../components/RemoteErrorFallback";
-import { CART_ADD_EVENT, type CartItem } from "../cart/cartEvents";
+import { type CartItem } from "../cart/cartEvents";
+import { eventBus } from "../events/eventBus";
+import { EVENT_NAMES } from "../events/eventNames";
 
 type ProductsMfeElement = HTMLElement & {
   onAddToCart?: (item: CartItem) => void;
@@ -54,14 +56,9 @@ function ProductsRemote() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // The callback crosses the custom-element boundary.
-  // The Shell forwards the item to its existing cart handler.
   const handleAddToCart = useCallback((item: CartItem) => {
-    window.dispatchEvent(
-      new CustomEvent<CartItem>(CART_ADD_EVENT, {
-        detail: item,
-      }),
-    );
+
+    eventBus.emit(EVENT_NAMES.CART_ADD, item);
   }, []);
 
   useEffect(() => {
@@ -124,6 +121,7 @@ function ProductsRemote() {
   // Assign the callback as a DOM property, not an HTML attribute.
   useEffect(() => {
     if (!loaded || !productsRef.current) return;
+
 
     productsRef.current.onAddToCart = handleAddToCart;
 

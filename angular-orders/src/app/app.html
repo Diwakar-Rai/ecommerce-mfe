@@ -1,6 +1,17 @@
-
 <section class="orders-page">
-  @if (currentPath === "/orders" || currentPath === "/orders/") {
+  <div class="organization-panel">
+    <p class="muted">Current organization</p>
+
+    <h2>{{ selectedOrganization }}</h2>
+
+    <div class="organization-actions">
+      <button class="primary-button" (click)="selectOrganization('Acme')">Select Acme</button>
+
+      <button class="primary-button" (click)="selectOrganization('Globex')">Select Globex</button>
+    </div>
+  </div>
+  <app-organization-status></app-organization-status>
+  @if (currentPath === '/orders' || currentPath === '/orders/') {
     <header class="page-heading">
       <div>
         <p class="eyebrow">YOUR ACCOUNT</p>
@@ -36,17 +47,13 @@
               <strong>₹{{ orderTotal(order).toLocaleString('en-IN') }}</strong>
             </div>
 
-            <button class="primary-button" (click)="openOrder(order.id)">
-              View Details
-            </button>
+            <button class="primary-button" (click)="openOrder(order.id)">View Details</button>
           </div>
         </article>
       }
     </div>
   } @else if (selectedOrder) {
-    <button class="back-button" (click)="backToOrders()">
-      ← Back to Orders
-    </button>
+    <button class="back-button" (click)="backToOrders()">← Back to Orders</button>
 
     <header class="page-heading">
       <div>
@@ -55,10 +62,7 @@
         <p class="muted">Placed on {{ selectedOrder.date }}</p>
       </div>
 
-      <span
-        class="status"
-        [attr.data-status]="selectedOrder.status"
-      >
+      <span class="status" [attr.data-status]="selectedOrder.status">
         {{ selectedOrder.status }}
       </span>
     </header>
@@ -73,26 +77,20 @@
             <p class="muted">Quantity: {{ item.quantity }}</p>
           </div>
 
-          <strong>
-            ₹{{ (item.price * item.quantity).toLocaleString('en-IN') }}
-          </strong>
+          <strong> ₹{{ (item.price * item.quantity).toLocaleString('en-IN') }} </strong>
         </div>
       }
 
       <div class="detail-total">
         <span>Order total</span>
-        <strong>
-          ₹{{ orderTotal(selectedOrder).toLocaleString('en-IN') }}
-        </strong>
+        <strong> ₹{{ orderTotal(selectedOrder).toLocaleString('en-IN') }} </strong>
       </div>
     </article>
   } @else {
     <div class="empty-state">
       <h1>Order not found</h1>
       <p class="muted">This order does not exist in the demo data.</p>
-      <button class="primary-button" (click)="backToOrders()">
-        Back to Orders
-      </button>
+      <button class="primary-button" (click)="backToOrders()">Back to Orders</button>
     </div>
   }
 </section>

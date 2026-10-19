@@ -4,7 +4,7 @@
   "shared": [
     {
       "packageName": "react",
-      "outFileName": "react.kOcLYD5Mxc.js",
+      "outFileName": "react.XmmHUXYCRm-dev.js",
       "requiredVersion": "^19.2.8",
       "singleton": true,
       "strictVersion": true,
@@ -12,7 +12,7 @@
     },
     {
       "packageName": "react-dom",
-      "outFileName": "react_dom.q8iLtj8M4l.js",
+      "outFileName": "react_dom.2yKIQJEYjo-dev.js",
       "requiredVersion": "^19.2.8",
       "singleton": true,
       "strictVersion": true,
@@ -20,7 +20,7 @@
     },
     {
       "packageName": "react-dom/client",
-      "outFileName": "react_dom_client.YOp8RDWjxg.js",
+      "outFileName": "react_dom_client.OgvANFQokQ-dev.js",
       "requiredVersion": "^19.2.8",
       "singleton": true,
       "strictVersion": true,
@@ -28,7 +28,7 @@
     },
     {
       "packageName": "react-router-dom",
-      "outFileName": "react_router_dom.9aoN5zb4az.js",
+      "outFileName": "react_router_dom.UE7E-qZYls-dev.js",
       "requiredVersion": "^7.18.4",
       "singleton": true,
       "strictVersion": true,
@@ -39,26 +39,32 @@
       "strictVersion": false,
       "version": "0.0.0",
       "requiredVersion": "0.0.0",
-      "packageName": "@nf-internal/chunk-NNSSKBJZ",
-      "outFileName": "chunk-NNSSKBJZ.js"
+      "packageName": "@nf-internal/chunk-6UNACJT5",
+      "outFileName": "chunk-6UNACJT5.js"
     },
     {
       "singleton": false,
       "strictVersion": false,
       "version": "0.0.0",
       "requiredVersion": "0.0.0",
-      "packageName": "@nf-internal/chunk-CAP6FYJW",
-      "outFileName": "chunk-CAP6FYJW.js"
+      "packageName": "@nf-internal/chunk-HOM7SSJL",
+      "outFileName": "chunk-HOM7SSJL.js"
     }
   ],
   "exposes": [
     {
       "key": "./ProductsApp",
-      "outFileName": "ProductsApp-LK3R6Z6G.js"
+      "outFileName": "ProductsApp.js",
+      "dev": {
+        "entryPoint": "C:/Diwakar/microfrontend/projects/ecommerce-mfe/react-products/src/App.tsx"
+      }
     },
     {
       "key": "./ProductsElement",
-      "outFileName": "ProductsElement-JOYOZBU5.js"
+      "outFileName": "ProductsElement.js",
+      "dev": {
+        "entryPoint": "C:/Diwakar/microfrontend/projects/ecommerce-mfe/react-products/src/federation/registerProductsElement.tsx"
+      }
     }
   ]
 }

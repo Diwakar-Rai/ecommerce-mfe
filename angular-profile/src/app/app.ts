@@ -1,5 +1,7 @@
-﻿import { Component } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { OrganizationService } from './organization.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
+export class App implements OnInit, OnDestroy {
   isEditing = false;
 
   profile = {
@@ -34,5 +36,27 @@ export class App {
   cancelEditing(): void {
     this.isEditing = false;
   }
-}
 
+  selectedOrganization = 'Acme';
+
+  private organizationSubscription?: Subscription;
+
+  constructor(
+    private readonly organizationService: OrganizationService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.organizationSubscription = this.organizationService.selectedOrganization$.subscribe(
+      (organization) => {
+        this.selectedOrganization = organization;
+        console.log('Profile received organization:', organization);
+        this.changeDetectorRef.markForCheck();
+      },
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.organizationSubscription?.unsubscribe();
+  }
+}
